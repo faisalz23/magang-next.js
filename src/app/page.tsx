@@ -1,9 +1,9 @@
 import GreetingButton from "@/app/component/GreetingButton"
 
 export default function Home() {
-  const name : String= "Faisal Mubarok";
+  const name : string= "Faisal Mubarok";
 
-  const names : String[] = ["jhon", "jane", "albert"];
+  const names : string[] = ["jhon", "jane", "albert"];
 
   return (
     <div className="">

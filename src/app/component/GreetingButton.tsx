@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 
-type  Props = {name: String };
+type  Props = {name: string };
 
 const GreetingButton = (props: Props) => { 'props is defined but never used.'
     
