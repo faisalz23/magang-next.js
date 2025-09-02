@@ -61,7 +61,7 @@ const Page = () => {
   // }, [digit1, digit2, operator, result]);
 
   return (
-    <main className="bg-white text-black w-full h-screen flex justify-center items-center">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
       <div className="grid grid-cols-3 gap-2 bg-slate-300 p-4 rounded-2xl shadow-2xl">
         <div className="h-20 bg-black/80 col-span-3 rounded-2xl place-content-end flex items-center text-white font-bold p-4">
           {resultScreen}

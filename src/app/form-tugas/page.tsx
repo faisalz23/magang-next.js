@@ -59,7 +59,7 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 p-6">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6">
       <div className="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4 text-indigo-600">
           User Form

@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Home() {
   const links = [
     { href: "/calculator", label: "Calculator" },
-    { href: "/form-tugas", label: "User Form" },
+    { href: "/form-tugas", label: "Form" },
     { href: "/api/products", label: "Get Products" },
     { href: "/api/products/id", label: "Detail Products" },
   ];
