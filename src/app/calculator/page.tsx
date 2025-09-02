@@ -1,67 +1,103 @@
 "use client";
-import { useState } from "react";
+import CalculatorButton from "./components/CalculatorButton";
+import { useMemo, useState } from "react";
 
-export default function Calculator() {
-  const [input, setInput] = useState("0");
+type TOperator = "+" | "-";
 
-  const handleClick = (value: string) => {
-    if (input === "0") {
-      setInput(value);
+const Page = () => {
+  const [digit1, setDigit1] = useState<number>();
+  const [digit2, setDigit2] = useState<number>();
+  const [result, setResult] = useState<number>();
+  const [operator, setOperator] = useState<TOperator>();
+
+  // const [resultScreen, setResultScreen] = useState<string>();
+
+  const onDigitClick = (value: number) => {
+    const reset = () => {
+      setOperator(undefined);
+      setDigit2(undefined);
+      setResult(undefined);
+    };
+
+    if (result !== undefined) {
+      reset();
+      setDigit1(value);
+      return;
+    }
+    if (!operator) return setDigit1(value);
+    setDigit2(value);
+  };
+
+  const onResultClick = () => {
+    if (!digit1 || !digit2 || !operator) return;
+
+    let _result = 0;
+    if (operator === "+") {
+      _result = digit1 + digit2;
     } else {
-      setInput(input + value);
+      _result = digit1 - digit2;
     }
+    setResult(_result);
   };
 
-  const handleClear = () => setInput("0");
-  const handleBackspace = () => setInput(input.length > 1 ? input.slice(0, -1) : "0");
+  const resultScreen = useMemo(() => {
+    const _digit1 = digit1 === undefined ? "" : digit1;
+    const _digit2 = digit2 === undefined ? "" : digit2;
+    const _operator = operator === undefined ? "" : operator;
+    const _result = result === undefined ? "" : `= ${result}`;
 
-  const handleCalculate = () => {
-    try {
-      // eslint-disable-next-line no-eval
-      setInput(eval(input).toString());
-    } catch {
-      setInput("Error");
-    }
-  };
+    const _resultScreen = `${_digit1} ${_operator} ${_digit2} ${_result}`;
+    return _resultScreen;
+  }, [digit1, digit2, operator, result]);
+
+  // useEffect(() => {
+  //   const _digit1 = digit1 === undefined ? "" : digit1;
+  //   const _digit2 = digit2 === undefined ? "" : digit2;
+  //   const _operator = operator === undefined ? "" : operator;
+  //   const _result = result === undefined ? "" : `= ${result}`;
+
+  //   const _resultScreen = `${_digit1} ${_operator} ${_digit2} ${_result}`;
+  //   setResultScreen(_resultScreen);
+  // }, [digit1, digit2, operator, result]);
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/download.jpeg')" }} // taruh gambar di folder public
-    >
-      <div className="bg-white/20 backdrop-blur-xl border border-white/30 p-6 rounded-2xl shadow-2xl w-[300px]">
-        {/* Display */}
-        <div className="text-right text-white text-4xl font-mono mb-6 truncate">
-          {input}
+    <main className="bg-white text-black w-full h-screen flex justify-center items-center">
+      <div className="grid grid-cols-3 gap-2 bg-slate-300 p-4 rounded-2xl shadow-2xl">
+        <div className="h-20 bg-black/80 col-span-3 rounded-2xl place-content-end flex items-center text-white font-bold p-4">
+          {resultScreen}
         </div>
+        {[...Array(9)].map((_, i) => {
+          const _digit = i + 1;
+          return (
+            <CalculatorButton
+              key={_digit}
+              onClick={() => onDigitClick(_digit)}
+              className="bg-slate-400"
+            >
+              {_digit}
+            </CalculatorButton>
+          );
+        })}
 
-        {/* Buttons */}
-        <div className="grid grid-cols-4 gap-3">
-          <button onClick={handleClear} className="bg-red-500/70 hover:bg-red-500 text-white p-3 rounded-xl font-bold">C</button>
-          <button onClick={handleBackspace} className="bg-gray-500/70 hover:bg-gray-500 text-white p-3 rounded-xl font-bold">⌫</button>
-          <button onClick={() => handleClick("%")} className="bg-orange-400/80 hover:bg-orange-400 text-white p-3 rounded-xl font-bold">%</button>
-          <button onClick={() => handleClick("/")} className="bg-orange-400/80 hover:bg-orange-400 text-white p-3 rounded-xl font-bold">÷</button>
+        <CalculatorButton
+          onClick={() => setOperator("+")}
+          className="bg-blue-300"
+        >
+          +
+        </CalculatorButton>
 
-          <button onClick={() => handleClick("7")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">7</button>
-          <button onClick={() => handleClick("8")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">8</button>
-          <button onClick={() => handleClick("9")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">9</button>
-          <button onClick={() => handleClick("*")} className="bg-orange-400/80 hover:bg-orange-400 text-white p-3 rounded-xl font-bold">×</button>
-
-          <button onClick={() => handleClick("4")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">4</button>
-          <button onClick={() => handleClick("5")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">5</button>
-          <button onClick={() => handleClick("6")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">6</button>
-          <button onClick={() => handleClick("-")} className="bg-orange-400/80 hover:bg-orange-400 text-white p-3 rounded-xl font-bold">−</button>
-
-          <button onClick={() => handleClick("1")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">1</button>
-          <button onClick={() => handleClick("2")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">2</button>
-          <button onClick={() => handleClick("3")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">3</button>
-          <button onClick={() => handleClick("+")} className="bg-orange-400/80 hover:bg-orange-400 text-white p-3 rounded-xl font-bold">+</button>
-
-          <button onClick={() => handleClick("0")} className="col-span-2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">0</button>
-          <button onClick={() => handleClick(".")} className="bg-black/40 hover:bg-black/60 text-white p-3 rounded-xl">.</button>
-          <button onClick={handleCalculate} className="bg-green-500/80 hover:bg-green-500 text-white p-3 rounded-xl font-bold">=</button>
-        </div>
+        <CalculatorButton
+          onClick={() => setOperator("-")}
+          className="bg-red-300"
+        >
+          -
+        </CalculatorButton>
+        <CalculatorButton onClick={onResultClick} className="bg-green-400">
+          =
+        </CalculatorButton>
       </div>
-    </div>
+    </main>
   );
-}
+};
+
+export default Page;
